@@ -6,11 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import sn.uasz.CalendriersAPI.dtos.EvennementDTO;
 import sn.uasz.CalendriersAPI.entities.Evennement;
+import sn.uasz.CalendriersAPI.exceptions.EvennementNotFoundException;
 import sn.uasz.CalendriersAPI.mappers.EvennementMapper;
 import sn.uasz.CalendriersAPI.repositories.EvennementRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,11 +38,14 @@ public class EvennementServiceImpl implements EvennementService {
 
 
     @Override
-    public EvennementDTO modifierEvennement(EvennementDTO evennementDTO) {
+    public EvennementDTO modifierEvennement(Long evennementId,EvennementDTO evennementDTO) throws EvennementNotFoundException {
+        Optional<Evennement> evennemen=evennementRepository.findById(evennementDTO.getId());
+        if(evennemen.isEmpty()) throw new EvennementNotFoundException("Evennement not found");
+        evennementDTO.setId(evennementDTO.getId());
         log.info("modifier Evennement");
         Evennement evennement=evennementMapper.formEvennementDTO(evennementDTO);
-        Evennement ajouterEvennement = evennementRepository.save(evennement);
-        return evennementMapper.formEvennement(ajouterEvennement);
+        Evennement modifierEvennement = evennementRepository.save(evennement);
+        return evennementMapper.formEvennement(modifierEvennement);
     }
 
 

@@ -1,25 +1,31 @@
 package sn.uasz.CalendriersAPI.web;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.uasz.CalendriersAPI.dtos.EvennementDTO;
+import sn.uasz.CalendriersAPI.exceptions.EvennementNotFoundException;
 import sn.uasz.CalendriersAPI.services.EvennementService;
 
 import java.util.List;
 
 @AllArgsConstructor
+@RequestMapping("/api")
 @RestController
 public class EvennemntController {
     private EvennementService evennementService;
 
-    @PostMapping("/ajouterEvennement")
-    public EvennementDTO ajouterEvennement(EvennementDTO evennementDTO) {
-        return evennementService.ajouterEvennement(evennementDTO);
+    @PostMapping("/evennements")
+    public ResponseEntity<EvennementDTO> ajouterEvennement(@RequestBody EvennementDTO evennementDTO) {
+        EvennementDTO created = evennementService.ajouterEvennement(evennementDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-   
-    @PutMapping("/modifierEvennement")
-    public EvennementDTO modifierEvennement(EvennementDTO evennementDTO) {
-        return evennementService.modifierEvennement(evennementDTO);
+
+
+    @PutMapping("/evennements/{id}")
+    public EvennementDTO modifierEvennement(@PathVariable(name = "id") Long evennementId,@RequestBody EvennementDTO evennementDTO) throws EvennementNotFoundException {
+        return evennementService.modifierEvennement(evennementId,evennementDTO);
     }
 }
