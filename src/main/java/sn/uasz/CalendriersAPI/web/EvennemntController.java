@@ -21,11 +21,17 @@ public class EvennemntController {
         EvennementDTO created = evennementService.ajouterEvennement(evennementDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
-
-
-
+    @GetMapping("/afficherEvennement")
+    public List<EvennementDTO> afficherEvennements(){
+        return evennementService.afficherEvennements();
+    }
     @PutMapping("/evennements/{id}")
     public EvennementDTO modifierEvennement(@PathVariable(name = "id") Long evennementId,@RequestBody EvennementDTO evennementDTO) throws EvennementNotFoundException {
         return evennementService.modifierEvennement(evennementId,evennementDTO);
     }
+    @DeleteMapping("/supprimerEvennement")
+    public void supprimerEvennement(Long evennementId) throws EvennementNotFoundException {
+        evennementService.supprimerEvennement(evennementId);
+    }
+
 }

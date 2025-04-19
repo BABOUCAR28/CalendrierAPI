@@ -55,6 +55,10 @@ class EvennementControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())  // Vérifie que le statut est 201
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(evennementDTO)));  // Vérifie que la réponse contient les données attendues
     }
+    @Test
+    void shouldAllEvennements() {
+
+    }
 
     @Test
     void shouldUpdateEvennement() throws Exception {

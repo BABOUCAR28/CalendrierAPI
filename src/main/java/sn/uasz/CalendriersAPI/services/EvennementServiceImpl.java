@@ -36,6 +36,15 @@ public class EvennementServiceImpl implements EvennementService {
         return null;
     }
 
+    @Override
+    public List<EvennementDTO> afficherEvennements() {
+        List<Evennement> evennements = evennementRepository.findAll();
+        List<EvennementDTO> evennementsDTOs = evennements.stream().map(evennement -> evennementMapper.formEvennement(evennement)).collect(Collectors.toList());
+        return evennementsDTOs;
+    }
+
+
+
 
     @Override
     public EvennementDTO modifierEvennement(Long evennementId,EvennementDTO evennementDTO) throws EvennementNotFoundException {
@@ -46,6 +55,13 @@ public class EvennementServiceImpl implements EvennementService {
         Evennement evennement=evennementMapper.formEvennementDTO(evennementDTO);
         Evennement modifierEvennement = evennementRepository.save(evennement);
         return evennementMapper.formEvennement(modifierEvennement);
+    }
+    @Override
+    public void supprimerEvennement(Long evennementId) throws EvennementNotFoundException {
+        Optional<Evennement> evennement=evennementRepository.findById(evennementId);
+        if (evennement.isEmpty())throw new EvennementNotFoundException("Evennement not found");
+        evennementRepository.deleteById(evennementId);
+
     }
 
 
