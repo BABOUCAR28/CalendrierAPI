@@ -29,8 +29,9 @@ public class EvennemntController {
     public EvennementDTO modifierEvennement(@PathVariable(name = "id") Long evennementId,@RequestBody EvennementDTO evennementDTO) throws EvennementNotFoundException {
         return evennementService.modifierEvennement(evennementId,evennementDTO);
     }
-    @DeleteMapping("/supprimerEvennement")
-    public void supprimerEvennement(Long evennementId) throws EvennementNotFoundException {
+    @DeleteMapping("/supprimerEvennement/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void supprimerEvennement(@PathVariable(name = "id") Long evennementId) throws EvennementNotFoundException {
         evennementService.supprimerEvennement(evennementId);
     }
 
